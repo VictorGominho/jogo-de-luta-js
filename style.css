@@ -1,0 +1,74 @@
+* {
+     box-sizing: border-box;
+}
+
+.tela-de-jogo {
+     position: relative;
+     display: inline-block;
+}
+
+.interface-cima {
+     position: absolute;
+     display: flex;
+     width: 100%;
+     align-items: center;
+     padding: 20px;
+}
+
+.interface-vida {
+     position: relative;
+     height: 30px;
+     width: 100%;
+}
+
+.jogador1 {
+     display: flex;
+     justify-content: flex-end;
+}
+
+.barra-de-vida-fundo {
+     background-color: red;
+     height: 30px;
+}
+
+#vida-fundo-jogador1 {
+     width: 100%;
+}
+
+.barra-de-vida-frente {
+     position: absolute;
+     background-color: rgb(233, 229, 1);
+     top: 0;
+     right: 0;
+     bottom: 0;
+}
+
+#vidaJogador1 {
+     width: 100%;
+}
+
+#vidaJogador2 {
+     left: 0;
+}
+
+#tempo {
+     background-color: rgba(45, 45, 253, 0.87);
+     height: 100px;
+     width: 100px;
+     flex-shrink: 0;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+
+#texto-resultado {
+     position: absolute;
+     color: white;
+     align-items: center;
+     justify-content: center;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     display: none;
+}

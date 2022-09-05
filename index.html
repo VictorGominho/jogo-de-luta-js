@@ -5,29 +5,26 @@
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Jogo de Luta</title>
-     <style>
-          * {
-               box-sizing: border-box;
-          }
-     </style>
+
+     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-     <div style="position: relative; display: inline-block;">
-          <div style="position: absolute; display: flex; width: 100%; align-items: center; 
-          padding: 20px;">
+     <div class="tela-de-jogo">
+          <div class="interface-cima">
                <!-- vida jogador 1 -->
-               <div style="position: relative; height: 30px; width: 100%; display: flex; justify-content: flex-end;">
-                    <div style="background-color: yellow; height: 30px; width: 100%;"></div>
-                    <div id="vidaJogador1" style="position: absolute; background-color:blue; top: 0; right: 0; bottom: 0; width: 100%;"></div>
+               <div class="interface-vida jogador1">
+                    <div class="barra-de-vida-fundo" id="vida-fundo-jogador1"></div>
+                    <div class="barra-de-vida-frente" id="vidaJogador1"></div>
                </div>
                <!-- tempo -->
-               <div style="background-color: red; height: 100px; width: 100px; flex-shrink: 0;"></div>
+               <div id="tempo">10</div>
                <!-- vida jogador 2 -->
-               <div style="position: relative; height: 30px; width: 100%;">
-                    <div style="background-color: yellow; height: 30px;"></div>
-                    <div id="vidaJogador2" style="position: absolute; background-color:blue; top: 0; right: 0; bottom: 0; left: 0;"></div>
+               <div class="interface-vida">
+                    <div class="barra-de-vida-fundo"></div>
+                    <div class="barra-de-vida-frente" id="vidaJogador2"></div>
                </div>
           </div>
+          <div id="texto-resultado">Empate</div>
           <canvas></canvas>
      </div>
      <script src="index.js"></script>
