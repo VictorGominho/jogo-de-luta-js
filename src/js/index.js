@@ -8,65 +8,22 @@ contexto.fillRect(0, 0, tela.width, tela.height)
 
 const gravidade = 0.7
 
-class Personagem {
-     constructor({posicao, movimento, cor, alteracao}) {
-          this.posicao = posicao
-          this.movimento = movimento
-          this.altura = 150
-          this.largura = 50
-          this.apertouTecla
-          this.areaAtaque = {
-               posicao: {
-                    x: this.posicao.x,
-                    y: this.posicao.y
-               },
-               alteracao,
-               height: 50,
-               width: 100
-          }
-          this.cor = cor
-          this.atacando
-          this.vida = 100
-     }
-
-     desenhar() {
-          //personagem
-          contexto.fillStyle = this.cor
-          contexto.fillRect(this.posicao.x, this.posicao.y, 50, this.altura)
-
-          //ataque
-          if (this.atacando) {
-               contexto.fillStyle = 'green'
-               contexto.fillRect(
-                    this.areaAtaque.posicao.x, 
-                    this.areaAtaque.posicao.y, 
-                    this.areaAtaque.width, 
-                    this.areaAtaque.height)
-          }
-     }
-
-     atualizar() {
-          this.desenhar()
-          this.areaAtaque.posicao.x = this.posicao.x + this.areaAtaque.alteracao.x
-          this.areaAtaque.posicao.y = this.posicao.y
-          this.posicao.x += this.movimento.x
-          this.posicao.y += this.movimento.y
-
-          if (this.posicao.y + this.altura + this.movimento.y >= tela.height) {
-               this.movimento.y = 0
-          } else {
-               this.movimento.y += gravidade
-          }
-
-     }
-
-     ataque() {
-          this.atacando = true
-          setTimeout(() => {
-               this.atacando = false
-          }, 100);
-     }
-}
+const estagio = new Sprite({
+     posicao: {
+          x: 0,
+          y: 0
+     },
+     imagemSrc: './src/assets/background.png'
+})
+const loja = new Sprite({
+     posicao: {
+          x: 646,
+          y: 173
+     },
+     imagemSrc: './src/assets/shop.png',
+     escala: 2.40,
+     maxFrames: 6
+})
 
 const jogador1 = new Personagem({
      posicao: {
@@ -81,6 +38,35 @@ const jogador1 = new Personagem({
      alteracao: {
           x: 0,
           y: 0
+     },
+     imagemSrc: './src/assets/samuraiMack/Idle.png',
+     maxFrames: 8,
+     escala: 2.5,
+     alteracao: {
+          x: 215,
+          y: 156
+     },
+     animacoes: {
+          parado: {
+               imagemSrc: './src/assets/samuraiMack/Idle.png',
+               maxFrames: 8
+          },
+          correndo: {
+               imagemSrc: './src/assets/samuraiMack/Run.png',
+               maxFrames: 8
+          },
+          pulando: {
+               imagemSrc: './src/assets/samuraiMack/Jump.png',
+               maxFrames: 2
+          },
+          caindo: {
+               imagemSrc: './src/assets/samuraiMack/Fall.png',
+               maxFrames: 2
+          },
+          atacando1: {
+               imagemSrc: './src/assets/samuraiMack/Attack1.png',
+               maxFrames: 6
+          }
      }
 })
 
@@ -97,6 +83,35 @@ const jogador2 = new Personagem({
      alteracao: {
           x: -50,
           y: 0
+     },
+     imagemSrc: './src/assets/kenji/Idle.png',
+     maxFrames: 4,
+     escala: 2.5,
+     alteracao: {
+          x: 215,
+          y: 171
+     },
+     animacoes: {
+          parado: {
+               imagemSrc: './src/assets/kenji/Idle.png',
+               maxFrames: 4
+          },
+          correndo: {
+               imagemSrc: './src/assets/kenji/Run.png',
+               maxFrames: 8
+          },
+          pulando: {
+               imagemSrc: './src/assets/kenji/Jump.png',
+               maxFrames: 2
+          },
+          caindo: {
+               imagemSrc: './src/assets/kenji/Fall.png',
+               maxFrames: 2
+          },
+          atacando1: {
+               imagemSrc: './src/assets/kenji/Attack1.png',
+               maxFrames: 4
+          }
      }
 })
 
@@ -121,35 +136,51 @@ const teclas = {
      }
 }
 
-function colisaoRetangulo({retangulo1, retangulo2}) {
-     return (
-          retangulo1.areaAtaque.posicao.x + retangulo1.areaAtaque.width >= retangulo2.posicao.x &&
-          retangulo1.areaAtaque.posicao.x <= retangulo2.posicao.x + retangulo2.largura &&
-          retangulo1.areaAtaque.posicao.y + retangulo1.areaAtaque.height >= retangulo2.posicao.y &&
-          retangulo1.areaAtaque.posicao.y <= retangulo2.posicao.y + retangulo2.altura
-          )
-}
+
 
 function animar(){
      window.requestAnimationFrame(animar)
      contexto.fillStyle = 'black'
      contexto.fillRect(0, 0, tela.width, tela.height)
+     estagio.atualizar()
+     loja.atualizar()
      jogador1.atualizar()
      jogador2.atualizar()
 
      jogador1.movimento.x = 0
      jogador2.movimento.x = 0
 
+     //jogador 1 - movimento
      if (teclas.a.pressionado && jogador1.apertouTecla === 'a') {
-          jogador1.movimento.x = -4
+          jogador1.movimento.x = -5
+          jogador1.trocaAnimacao('correndo')
      } else if (teclas.d.pressionado && jogador1.apertouTecla === 'd'){
-          jogador1.movimento.x = 4
+          jogador1.movimento.x = 5
+          jogador1.trocaAnimacao('correndo')
+     } else {
+          jogador1.trocaAnimacao('parado')
      }
 
+     if (jogador1.movimento.y < 0) {
+          jogador1.trocaAnimacao('pulando')
+     } else if (jogador1.movimento.y > 0){
+          jogador1.trocaAnimacao('caindo')
+     }
+     //jogador 2 - movimento
      if (teclas.ArrowLeft.pressionado && jogador2.apertouTecla === 'ArrowLeft') {
-          jogador2.movimento.x = -4
+          jogador2.movimento.x = -5
+          jogador2.trocaAnimacao('correndo')
      } else if (teclas.ArrowRight.pressionado && jogador2.apertouTecla === 'ArrowRight'){
-          jogador2.movimento.x = 4
+          jogador2.movimento.x = 5
+          jogador2.trocaAnimacao('correndo')
+     } else {
+          jogador2.trocaAnimacao('parado')
+     }
+
+     if (jogador2.movimento.y < 0) {
+          jogador2.trocaAnimacao('pulando')
+     } else if (jogador2.movimento.y > 0){
+          jogador2.trocaAnimacao('caindo')
      }
 
      //colisão
@@ -180,31 +211,6 @@ function animar(){
      }
 }
 
-function escolheVencedor({jogador1, jogador2, tempoId}) {
-     clearTimeout(tempoId)
-     if (jogador1.vida === jogador2.vida){
-          document.querySelector('#texto-resultado').innerHTML = 'Empate';
-     } else if (jogador1.vida > jogador2.vida) {
-          document.querySelector('#texto-resultado').innerHTML = 'Jogador 1 Vence!'
-     } else if (jogador1.vida < jogador2.vida) {
-          document.querySelector('#texto-resultado').innerHTML = 'Jogador 2 Vence!'
-     }
-}
-
-let tempo = 60
-let tempoId
-function tempoRegressivo() {
-     if (tempo > 0) {
-          tempoId = setTimeout(tempoRegressivo, 1000)
-          tempo --
-          document.querySelector('#tempo').innerHTML = tempo
-     }
-     if (tempo === 0) {
-          document.querySelector('#texto-resultado').style.display = 'flex'
-          escolheVencedor({jogador1,jogador2,tempoId})
-     }
-     
-}
 
 tempoRegressivo()
 
