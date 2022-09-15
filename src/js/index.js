@@ -27,8 +27,8 @@ const loja = new Sprite({
 
 const jogador1 = new Personagem({
      posicao: {
-          x: 0,
-          y: 0
+          x: 170,
+          y: 311
      },
      movimento: {
           x: 0,
@@ -88,8 +88,8 @@ const jogador1 = new Personagem({
 
 const jogador2 = new Personagem({
      posicao: {
-          x: 400,
-          y: 100
+          x: 800,
+          y: 311
      },
      movimento: {
           x: 0,
