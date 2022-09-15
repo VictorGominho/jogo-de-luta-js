@@ -1,5 +1,6 @@
 * {
      box-sizing: border-box;
+     font-family: 'Press Start 2P', cursive;
 }
 
 .tela-de-jogo {
@@ -17,13 +18,23 @@
 
 .interface-vida {
      position: relative;
-     height: 30px;
      width: 100%;
+     border-top: 4px solid #CA8A04;
+     border-bottom: 4px solid #CA8A04;
 }
 
 .jogador1 {
      display: flex;
      justify-content: flex-end;
+     border-left: 4px solid #CA8A04;
+     border-bottom-left-radius: 12px;
+     border-top-left-radius: 12px;
+}
+
+.jogador2 {
+     border-right: 4px solid #CA8A04;
+     border-bottom-right-radius: 12px;
+     border-top-right-radius: 12px;
 }
 
 .barra-de-vida-fundo {
@@ -33,11 +44,18 @@
 
 #vida-fundo-jogador1 {
      width: 100%;
+     border-bottom-left-radius: 7px;
+     border-top-left-radius: 7px;
+}
+
+#vida-fundo-jogador2 {
+     border-bottom-right-radius: 7px;
+     border-top-right-radius: 7px;
 }
 
 .barra-de-vida-frente {
      position: absolute;
-     background-color: rgb(233, 229, 1);
+     background-color: #34D399;
      top: 0;
      right: 0;
      bottom: 0;
@@ -45,20 +63,26 @@
 
 #vidaJogador1 {
      width: 100%;
+     border-bottom-left-radius: 5px;
+     border-top-left-radius: 5px;
 }
 
 #vidaJogador2 {
      left: 0;
+     border-bottom-right-radius: 5px;
+     border-top-right-radius: 5px;
 }
 
 #tempo {
-     background-color: rgba(45, 45, 253, 0.87);
-     height: 100px;
+     background-color:#3730A3;
+     height: 60px;
      width: 100px;
      flex-shrink: 0;
      display: flex;
      align-items: center;
      justify-content: center;
+     color: whitesmoke;
+     border: 5px solid whitesmoke;
 }
 
 #texto-resultado {

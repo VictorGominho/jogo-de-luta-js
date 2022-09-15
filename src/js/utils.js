@@ -12,9 +12,9 @@ function escolheVencedor({jogador1, jogador2, tempoId}) {
      if (jogador1.vida === jogador2.vida){
           document.querySelector('#texto-resultado').innerHTML = 'Empate';
      } else if (jogador1.vida > jogador2.vida) {
-          document.querySelector('#texto-resultado').innerHTML = 'Jogador 1 Vence!'
+          document.querySelector('#texto-resultado').innerHTML = 'Jogador 1 Vence'
      } else if (jogador1.vida < jogador2.vida) {
-          document.querySelector('#texto-resultado').innerHTML = 'Jogador 2 Vence!'
+          document.querySelector('#texto-resultado').innerHTML = 'Jogador 2 Vence'
      }
 }
 
@@ -27,6 +27,8 @@ function tempoRegressivo() {
           document.querySelector('#tempo').innerHTML = tempo
      }
      if (tempo === 0) {
+          jogador1.invul = true
+          jogador2.invul = true
           document.querySelector('#texto-resultado').style.display = 'flex'
           escolheVencedor({jogador1,jogador2,tempoId})
      }

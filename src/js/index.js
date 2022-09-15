@@ -176,6 +176,8 @@ function animar(){
      contexto.fillRect(0, 0, tela.width, tela.height)
      estagio.atualizar()
      loja.atualizar()
+     contexto.fillStyle = 'rgba(255, 255, 255, 0.15)'
+     contexto.fillRect(0, 0, tela.width, tela.height)
      jogador1.atualizar()
      jogador2.atualizar()
 
@@ -223,7 +225,9 @@ function animar(){
           jogador1.atacando && jogador1.frameAtual === 4) {
                jogador2.atingido(20)
                jogador1.atacando = false
-               document.querySelector('#vidaJogador2').style.width = jogador2.vida + '%'
+               gsap.to('#vidaJogador2', {
+                    width: jogador2.vida + '%'
+               })
      }
 
      if (jogador1.atacando && jogador1.frameAtual === 4) {
@@ -237,7 +241,9 @@ function animar(){
           jogador2.atacando && jogador2.frameAtual === 2) {
                jogador1.atingido(10)
                jogador2.atacando = false
-               document.querySelector('#vidaJogador1').style.width = jogador1.vida + '%'
+               gsap.to('#vidaJogador1', {
+                    width: jogador1.vida + '%'
+               })
      }
 
      if (jogador2.atacando && jogador2.frameAtual === 2) {

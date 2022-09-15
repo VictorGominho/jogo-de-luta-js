@@ -77,6 +77,7 @@ class Personagem extends Sprite {
           this.animacoes = animacoes
           this.podeAtacar = true
           this.morto = false
+          this.invul = false
 
           for (const frame in this.animacoes) {
                animacoes[frame].imagem = new Image()
@@ -116,8 +117,9 @@ class Personagem extends Sprite {
      }
 
      atingido(dano) {
-          this.vida -= dano
-
+          if(this.invul === false){
+               this.vida -= dano
+          }
           if (this.vida <= 0) {
                this.trocaAnimacao('morreu')
           } else this.trocaAnimacao('atingido')
