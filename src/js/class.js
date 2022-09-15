@@ -46,7 +46,7 @@ class Sprite {
 }
 
 class Personagem extends Sprite {
-     constructor({posicao, movimento, cor, imagemSrc, escala = 1, maxFrames = 1, alteracao = {x:0,y:0}, animacoes}) {
+     constructor({posicao, movimento, cor, imagemSrc, escala = 1, maxFrames = 1, alteracao = {x:0,y:0}, animacoes, areaAtaque = {alteracao: {}, width: undefined, height: undefined}}) {
           super({
                posicao,
                imagemSrc,
@@ -64,9 +64,9 @@ class Personagem extends Sprite {
                     x: this.posicao.x,
                     y: this.posicao.y
                },
-               alteracao,
-               height: 50,
-               width: 100
+               alteracao: areaAtaque.alteracao,
+               height: areaAtaque.height,
+               width: areaAtaque.width
           }
           this.cor = cor
           this.atacando
@@ -75,6 +75,8 @@ class Personagem extends Sprite {
           this.framesPassados = 0
           this.frameParar = 6
           this.animacoes = animacoes
+          this.podeAtacar = true
+          this.morto = false
 
           for (const frame in this.animacoes) {
                animacoes[frame].imagem = new Image()
@@ -84,12 +86,20 @@ class Personagem extends Sprite {
 
      atualizar() {
           this.desenhar()
-          this.animarFrames()
+          if (!this.morto) this.animarFrames()
           
           this.areaAtaque.posicao.x = this.posicao.x + this.areaAtaque.alteracao.x
-          this.areaAtaque.posicao.y = this.posicao.y
+          this.areaAtaque.posicao.y = this.posicao.y + this.areaAtaque.alteracao.y
+
+          //contexto.fillRect(this.areaAtaque.posicao.x , this.areaAtaque.posicao.y,
+               //this.areaAtaque.width, this.areaAtaque.height)
+
           this.posicao.x += this.movimento.x
           this.posicao.y += this.movimento.y
+
+          if (this.atacando) {
+               this.podeAtacar = false
+          } else this.podeAtacar = true
 
           if (this.posicao.y + this.altura + this.movimento.y >= tela.height - 95) {
                this.movimento.y = 0
@@ -103,15 +113,31 @@ class Personagem extends Sprite {
      ataque() {
           this.trocaAnimacao('atacando1')
           this.atacando = true
-          setTimeout(() => {
-               this.atacando = false
-          }, 100);
+     }
+
+     atingido(dano) {
+          this.vida -= dano
+
+          if (this.vida <= 0) {
+               this.trocaAnimacao('morreu')
+          } else this.trocaAnimacao('atingido')
      }
      
      trocaAnimacao(animacoes) {
+          //prioriza animação de morte
+          if (this.imagem === this.animacoes.morreu.imagem) {
+               if (this.frameAtual === this.animacoes.morreu.maxFrames - 1) this.morto = true
+               return
+          }
+
+          //prioriza animação de ataque
           if (this.imagem === this.animacoes.atacando1.imagem &&
                this.frameAtual < this.animacoes.atacando1.maxFrames -1) return
           
+          //prioriza animação de atingido
+          if (this.imagem === this.animacoes.atingido.imagem && 
+               this.frameAtual < this.animacoes.atingido.maxFrames - 1) return
+
           switch (animacoes) {
                case 'parado':
                     if (this.imagem !== this.animacoes.parado.imagem) {
@@ -144,6 +170,20 @@ class Personagem extends Sprite {
                     if (this.imagem !== this.animacoes.atacando1.imagem) {
                          this.imagem = this.animacoes.atacando1.imagem
                          this.maxFrames = this.animacoes.atacando1.maxFrames
+                         this.frameAtual = 0
+                    }
+                    break
+               case 'atingido':
+                    if (this.imagem !== this.animacoes.atingido.imagem) {
+                         this.imagem = this.animacoes.atingido.imagem
+                         this.maxFrames = this.animacoes.atingido.maxFrames
+                         this.frameAtual = 0
+                    }
+                    break
+               case 'morreu':
+                    if (this.imagem !== this.animacoes.morreu.imagem) {
+                         this.imagem = this.animacoes.morreu.imagem
+                         this.maxFrames = this.animacoes.morreu.maxFrames
                          this.frameAtual = 0
                     }
                     break

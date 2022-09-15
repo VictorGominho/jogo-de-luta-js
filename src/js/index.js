@@ -66,7 +66,23 @@ const jogador1 = new Personagem({
           atacando1: {
                imagemSrc: './src/assets/samuraiMack/Attack1.png',
                maxFrames: 6
+          },
+          atingido: {
+               imagemSrc: './src/assets/samuraiMack/Take Hit.png',
+               maxFrames: 4
+          },
+          morreu: {
+               imagemSrc: './src/assets/samuraiMack/Death.png',
+               maxFrames: 6
           }
+     },
+     areaAtaque: {
+          alteracao: {
+               x: 80,
+               y: -20
+          },
+          width: 150,
+          height: 150
      }
 })
 
@@ -111,7 +127,23 @@ const jogador2 = new Personagem({
           atacando1: {
                imagemSrc: './src/assets/kenji/Attack1.png',
                maxFrames: 4
+          },
+          atingido: {
+               imagemSrc: './src/assets/kenji/Take hit.png',
+               maxFrames:3
+          },
+          morreu: {
+               imagemSrc: './src/assets/kenji/Death.png',
+               maxFrames: 7
           }
+     },
+     areaAtaque: {
+          alteracao: {
+               x: -160,
+               y: 0
+          },
+          width: 160,
+          height: 140
      }
 })
 
@@ -188,20 +220,28 @@ function animar(){
           retangulo1: jogador1,
           retangulo2: jogador2
      }) && 
-          jogador1.atacando) {
+          jogador1.atacando && jogador1.frameAtual === 4) {
+               jogador2.atingido(20)
                jogador1.atacando = false
-               jogador2.vida -= 20
                document.querySelector('#vidaJogador2').style.width = jogador2.vida + '%'
+     }
+
+     if (jogador1.atacando && jogador1.frameAtual === 4) {
+          jogador1.atacando = false
      }
 
      if (colisaoRetangulo({
           retangulo1: jogador2,
           retangulo2: jogador1
      }) && 
-          jogador2.atacando) {
+          jogador2.atacando && jogador2.frameAtual === 2) {
+               jogador1.atingido(10)
                jogador2.atacando = false
-               jogador1.vida -= 20
                document.querySelector('#vidaJogador1').style.width = jogador1.vida + '%'
+     }
+
+     if (jogador2.atacando && jogador2.frameAtual === 2) {
+          jogador2.atacando = false
      }
 
      //terminar o jogo baseado na vida
@@ -217,39 +257,52 @@ tempoRegressivo()
 animar()
 
 window.addEventListener('keydown', (Event) => {
-     switch (Event.key) {
-          case 'd':
-               teclas.d.pressionado = true
-               jogador1.apertouTecla = 'd'
-               break;
-          case 'a':
-               teclas.a.pressionado = true
-               jogador1.apertouTecla = 'a'
-               break;
-          case 'w':
-               jogador1.movimento.y = -19
-               break;
-          case ' ':
-               jogador1.ataque()
-               break;
+     if (!jogador1.morto) {
+          switch (Event.key) {
+               case 'd':
+                    teclas.d.pressionado = true
+                    jogador1.apertouTecla = 'd'
+                    break;
+               case 'a':
+                    teclas.a.pressionado = true
+                    jogador1.apertouTecla = 'a'
+                    break;
+               case 'w':
+                    if (jogador1.posicao.y == 331){
+                         jogador1.movimento.y = -19
+                    break;
+                    } break;
 
-          case 'ArrowRight':
-               teclas.ArrowRight.pressionado = true
-               jogador2.apertouTecla = 'ArrowRight'
-               break;
-          case 'ArrowLeft':
-               teclas.ArrowLeft.pressionado = true
-               jogador2.apertouTecla = 'ArrowLeft'
-               break;
-          case 'ArrowUp':
-               jogador2.movimento.y = -19
-               break;
-          case '0':
-               jogador2.ataque()
-               break;
-
+               case ' ':
+                    if (jogador1.podeAtacar) {
+                         jogador1.ataque()
+                    break;
+                    }
+          }
      }
+     if (!jogador2.morto) {
+          switch (Event.key) {
+               case 'ArrowRight':
+                    teclas.ArrowRight.pressionado = true
+                    jogador2.apertouTecla = 'ArrowRight'
+                    break;
+               case 'ArrowLeft':
+                    teclas.ArrowLeft.pressionado = true
+                    jogador2.apertouTecla = 'ArrowLeft'
+                    break;
+               case 'ArrowUp':
+                    if (jogador2.posicao.y == 331) {
+                         jogador2.movimento.y = -19
+                    break;
+                    } break;
 
+               case '0':
+                    if (jogador2.podeAtacar) {
+                         jogador2.ataque()
+                    break;
+                    }
+          }
+     }
 })
 
 window.addEventListener('keyup', (Event) => {
